@@ -51,7 +51,7 @@ pin = machine.Pin(10, machine.Pin.IN)
 
 handlers = {
     'time': time,
-    'dummy': dummy,
+    'dummy': dummy
 }
 
 def main():

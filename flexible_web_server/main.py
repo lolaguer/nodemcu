@@ -23,11 +23,12 @@ import ntptime, utime
 from machine import RTC
 from time import sleep
 
-rtc = RTC()
 try:
     seconds = ntptime.time()
 except:
     seconds = 0
+
+rtc = RTC()
 rtc.datetime(utime.localtime(seconds))
 
 def time():
@@ -46,9 +47,24 @@ def dummy():
 
     return response_template % body
 
+pin = machine.Pin(10, machine.Pin.OUT)
+
+def light_on():
+    pin.value(1)
+    body = "Ok!"
+    return response_template % body
+
+def light_off():
+    pin.value(0)
+    body = "Ok!"
+    return response_template % body
+    
+
 handlers = {
     'time': time,
     'dummy': dummy,
+    'light_on': light_on,
+    'light_off': light_off
 }
 
 def main():
@@ -63,7 +79,6 @@ def main():
     print("Listening, connect your browser to http://<this_host>:8080")
 
     while True:
-        sleep(1)
         res = s.accept()
         client_s = res[0]
         client_addr = res[1]
